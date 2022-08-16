@@ -1,5 +1,6 @@
 package com.dickli.controller;
 
+import com.alibaba.csp.sentinel.annotation.SentinelResource;
 import com.dickli.provider.api.WelcomeService;
 import org.apache.dubbo.config.annotation.DubboReference;
 import org.springframework.stereotype.Controller;
@@ -9,12 +10,15 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @Controller
 @RequestMapping("/welcome")
 public class WelcomeController {
-    @DubboReference(version = "1.0.0")
+    @DubboReference(version = "1.0.0",check = false)
     private WelcomeService welcomeService;
 
     @RequestMapping("/welcome")
     @ResponseBody
+    @SentinelResource(value = "welcomeController")
     public String welcome(String userName){
         return welcomeService.welcome(userName);
     }
 }
+
+
