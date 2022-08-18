@@ -1,29 +1,33 @@
-package com.dickli.provider.service;
+package com.dickli.provider.service.welcome;
 
 import com.alibaba.csp.sentinel.annotation.SentinelResource;
 import com.alibaba.csp.sentinel.slots.block.BlockException;
-import com.dickli.provider.api.WelcomeService;
+import com.dickli.provider.api.welcome.WelcomeRpcService;
+import com.dickli.service.IUserService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.dubbo.config.annotation.DubboService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
 
 @RefreshScope
 @DubboService(version = "1.0.0")
 @Slf4j
-public class WelcomeServiceImpl implements WelcomeService {
+public class WelcomeRpcServiceImpl implements WelcomeRpcService {
     @Value("${welcome}")
     private String welcome;
+
+    @Autowired
+    private IUserService userService;
 
     @Override
     @SentinelResource(value = "welcome", fallback = "fallback", blockHandler = "handleBlock")
     public String welcome(String userName) {
         if (userName == null || "".equals(userName)) {
             userName = "stranger";
-        } else {
-            if ("exception".equals(userName)) {
-                throw new RuntimeException("模拟异常");
-            }
+        }
+        if ("exception".equals(userName)) {
+            throw new RuntimeException("模拟异常");
         }
         return welcome + " : " + userName;
     }
