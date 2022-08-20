@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @Controller
 @RequestMapping("/welcome")
 public class WelcomeController {
-    @DubboReference(version = "1.0.0")
+    @DubboReference
     private WelcomeRpcService welcomeService;
 
     @RequestMapping("/welcome")

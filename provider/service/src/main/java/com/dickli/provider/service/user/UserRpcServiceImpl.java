@@ -12,18 +12,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.Objects;
 
-@DubboService(version = "1.0.0")
+@DubboService
 public class UserRpcServiceImpl implements UserRpcService {
     @Autowired
     private IUserService userService;
-
     @Override
     public void insertUser(UserDto userDto) {
         if (Objects.isNull(userDto)) {
             throw new ServiceException("新增用户失败", "用户为空");
         }
         User user = new User();
-        BeanUtils.copyProperties(userDto, user);
+        BeanUtils.copyProperties(userDto,user);
         userService.save(user);
     }
 
@@ -32,12 +31,12 @@ public class UserRpcServiceImpl implements UserRpcService {
         if (StringUtils.isBlank(userId)) {
             throw new ServiceException("查询用户失败", "用户id为空");
         }
-        User user = userService.selectByUserId(userId);
-        if (Objects.isNull(user)) {
-            throw new ServiceException("查询用户失败", "用户不存在");
+        User user = userService.queryList(User.builder().userId(userId).build()).get(0);
+        if(Objects.isNull(user)){
+            return null;
         }
         UserDto userDto = new UserDto();
-        BeanUtils.copyProperties(user, userDto);
+        BeanUtils.copyProperties(user,userDto);
         return userDto;
     }
 }

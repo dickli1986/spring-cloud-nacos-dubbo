@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @RequestMapping("user")
 @Slf4j
 public class UserController {
-    @DubboReference(version = "1.0.0")
+    @DubboReference
     private UserRpcService userRpcService;
 
     @RequestMapping("insert")

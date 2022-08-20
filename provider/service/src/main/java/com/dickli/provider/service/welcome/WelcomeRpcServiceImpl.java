@@ -3,22 +3,17 @@ package com.dickli.provider.service.welcome;
 import com.alibaba.csp.sentinel.annotation.SentinelResource;
 import com.alibaba.csp.sentinel.slots.block.BlockException;
 import com.dickli.provider.api.welcome.WelcomeRpcService;
-import com.dickli.service.IUserService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.dubbo.config.annotation.DubboService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
 
 @RefreshScope
-@DubboService(version = "1.0.0")
+@DubboService
 @Slf4j
 public class WelcomeRpcServiceImpl implements WelcomeRpcService {
-    @Value("${welcome}")
+    @Value("${welcome:welcome}")
     private String welcome;
-
-    @Autowired
-    private IUserService userService;
 
     @Override
     @SentinelResource(value = "welcome", fallback = "fallback", blockHandler = "handleBlock")
