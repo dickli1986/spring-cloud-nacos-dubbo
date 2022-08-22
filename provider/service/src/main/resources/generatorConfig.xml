@@ -6,7 +6,7 @@
         <plugin type="org.mybatis.generator.plugins.MapperAnnotationPlugin"/>
         <plugin type="org.mybatis.generator.plugins.SerializablePlugin"/>
         <plugin type="com.dickli.mybatis.generator.plugins.lombok.LombokAnnotationPlugin"/>
-        <plugin type="com.dickli.mybatis.generator.plugins.mapper.SelectSelectivePlugin"/>
+        <plugin type="com.dickli.mybatis.generator.plugins.mapper.SelectListSelectivePlugin"/>
         <plugin type="com.dickli.mybatis.generator.plugins.service.ServicePlugin">
             <property name="targetProject" value="src/main/java"></property>
             <property name="servicePackage" value="com.dickli.service"></property>

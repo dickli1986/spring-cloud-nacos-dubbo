@@ -5,7 +5,8 @@ public enum ServiceMethodEnum {
     MODIFY("modify"),
     REMOVE("removeById"),
     QUERY("queryById"),
-    QUERY_LIST("queryList")
+    QUERY_LIST("queryList"),
+    QUERY_PAGE_LIST("queryPageList")
     ;
     String methodName;
 

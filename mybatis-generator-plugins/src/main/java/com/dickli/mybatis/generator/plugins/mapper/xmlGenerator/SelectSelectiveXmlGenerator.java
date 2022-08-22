@@ -16,7 +16,7 @@ public class SelectSelectiveXmlGenerator extends AbstractXmlElementGenerator {
     @Override
     public void addElements(XmlElement parentElement) {
         XmlElement answer = new XmlElement("select");
-        answer.addAttribute(new Attribute("id", "selectSelective"));
+        answer.addAttribute(new Attribute("id", "selectListSelective"));
         if (introspectedTable.getRules().generateResultMapWithBLOBs()) {
             answer.addAttribute(new Attribute("resultMap", introspectedTable.getResultMapWithBLOBsId()));
         } else {

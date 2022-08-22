@@ -117,6 +117,7 @@ public class ServicePlugin extends PluginAdapter {
 
         serviceInterface.addImportedType(new FullyQualifiedJavaType(introspectedTable.getBaseRecordType()));
         serviceInterface.addImportedType(new FullyQualifiedJavaType("java.util.List"));
+        serviceInterface.addImportedType(new FullyQualifiedJavaType("com.github.pagehelper.PageInfo"));
 
         for (ServiceMethodEnum serviceMethodEnum : ServiceMethodEnum.values()
         ) {
@@ -160,6 +161,8 @@ public class ServicePlugin extends PluginAdapter {
 
         clazz.addImportedType(new FullyQualifiedJavaType(introspectedTable.getBaseRecordType()));
         clazz.addImportedType(new FullyQualifiedJavaType("java.util.List"));
+        clazz.addImportedType(new FullyQualifiedJavaType("com.github.pagehelper.PageInfo"));
+        clazz.addImportedType(new FullyQualifiedJavaType("com.github.pagehelper.PageHelper"));
 
         for (ServiceMethodEnum serviceMethodEnum : ServiceMethodEnum.values()
         ) {
@@ -203,6 +206,12 @@ public class ServicePlugin extends PluginAdapter {
                 method.setReturnType(new FullyQualifiedJavaType("List<" + model + ">"));
                 method.addParameter(new Parameter(model, firstCharToLowCase(modelName)));
                 break;
+            case QUERY_PAGE_LIST:
+                method.setReturnType(new FullyQualifiedJavaType("PageInfo<" + model + ">"));
+                method.addParameter(new Parameter(model, firstCharToLowCase(modelName)));
+                method.addParameter(new Parameter(FullyQualifiedJavaType.getIntInstance(),"pageNum"));
+                method.addParameter(new Parameter(FullyQualifiedJavaType.getIntInstance(),"pageSize"));
+                break;
         }
         serviceInterface.addMethod(method);
     }
@@ -236,7 +245,14 @@ public class ServicePlugin extends PluginAdapter {
             case QUERY_LIST:
                 method.setReturnType(new FullyQualifiedJavaType("List<" + model + ">"));
                 method.addParameter(new Parameter(model, firstCharToLowCase(modelName)));
-                method.addBodyLine("return "+daoFieldName + ".selectSelective(" + firstCharToLowCase(modelName) + ");");
+                method.addBodyLine("return "+daoFieldName + ".selectListSelective(" + firstCharToLowCase(modelName) + ");");
+                break;
+            case QUERY_PAGE_LIST:
+                method.setReturnType(new FullyQualifiedJavaType("PageInfo<" + model + ">"));
+                method.addParameter(new Parameter(model, firstCharToLowCase(modelName)));
+                method.addParameter(new Parameter(FullyQualifiedJavaType.getIntInstance(), "pageNum"));
+                method.addParameter(new Parameter(FullyQualifiedJavaType.getIntInstance(), "pageSize"));
+                method.addBodyLine("return PageHelper.startPage(pageNum, pageSize).doSelectPageInfo(() -> "+daoFieldName + ".selectListSelective(" + firstCharToLowCase(modelName) + "));");
                 break;
         }
         clazz.addMethod(method);

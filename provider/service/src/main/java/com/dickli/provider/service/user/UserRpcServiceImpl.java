@@ -31,7 +31,7 @@ public class UserRpcServiceImpl implements UserRpcService {
         if (StringUtils.isBlank(userId)) {
             throw new ServiceException("查询用户失败", "用户id为空");
         }
-        User user = userService.queryList(User.builder().userId(userId).build()).get(0);
+        User user = userService.queryList(User.builder().userId(userId).build()).stream().findFirst().get();
         if(Objects.isNull(user)){
             return null;
         }

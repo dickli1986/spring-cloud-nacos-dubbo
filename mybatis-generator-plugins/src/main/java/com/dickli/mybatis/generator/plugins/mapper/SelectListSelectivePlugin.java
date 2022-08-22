@@ -12,7 +12,7 @@ import org.mybatis.generator.codegen.mybatis3.xmlmapper.elements.AbstractXmlElem
 
 import java.util.List;
 
-public class SelectSelectivePlugin extends PluginAdapter {
+public class SelectListSelectivePlugin extends PluginAdapter {
     @Override
     public boolean validate(List<String> warnings) {
         return Boolean.TRUE;
@@ -23,7 +23,7 @@ public class SelectSelectivePlugin extends PluginAdapter {
         String recordType = introspectedTable.getBaseRecordType();
         String modelName = recordType.substring(recordType.lastIndexOf(".") + 1);
         FullyQualifiedJavaType model = new FullyQualifiedJavaType(recordType);
-        Method method = new Method("selectSelective");
+        Method method = new Method("selectListSelective");
         method.setAbstract(Boolean.TRUE);
         interfaze.addImportedType(new FullyQualifiedJavaType("java.util.List"));
         method.setReturnType(new FullyQualifiedJavaType("List<"+modelName+">"));
